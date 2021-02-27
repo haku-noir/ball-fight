@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Physics;
 
-public class MovePlayerSystem : SystemBase
+public class AddForceToPlayerSystem : SystemBase
 {
     protected override void OnUpdate()
     {
