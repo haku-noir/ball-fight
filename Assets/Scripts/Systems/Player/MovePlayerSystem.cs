@@ -1,6 +1,5 @@
 ﻿using Unity.Entities;
 using Unity.Physics;
-using Unity.Jobs;
 
 public class MovePlayerSystem : SystemBase
 {
@@ -12,7 +11,7 @@ public class MovePlayerSystem : SystemBase
             .WithAll<PlayerTag>()
             .ForEach((ref PhysicsVelocity physicsVelocity, in PhysicsMass physicsMass, in Force force) =>
             {
-                physicsVelocity.Linear += physicsMass.InverseMass * force.Value * deltaTime;
+                physicsVelocity.Linear += physicsMass.InverseMass * force.Direction * force.Magnitude * deltaTime;
             })
             .Run();
     }

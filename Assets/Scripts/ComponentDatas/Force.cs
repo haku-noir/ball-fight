@@ -4,5 +4,6 @@ using Unity.Mathematics;
 [GenerateAuthoringComponent]
 public struct Force : IComponentData
 {
-    public float3 Value;
+    public float3 Direction;
+    public float Magnitude;
 }

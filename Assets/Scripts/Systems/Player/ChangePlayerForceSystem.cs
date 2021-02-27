@@ -14,7 +14,7 @@ public class ChangePlayerForceSystem : SystemBase
             .WithAll<PlayerTag>()
             .ForEach((ref Force force) =>
             {
-                force.Value = math.float3(horizontalInput * 10, 0, verticalInput * 10);
+                force.Direction = math.float3(horizontalInput, 0, verticalInput);
             })
             .Run();
     }

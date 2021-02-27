@@ -424,10 +424,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1e304ecef49435697389df3a8630c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Value:
+  Direction:
     x: 0
     y: 0
     z: 0
+  Magnitude: 10
 --- !u!114 &1472811762
 MonoBehaviour:
   m_ObjectHideFlags: 0
