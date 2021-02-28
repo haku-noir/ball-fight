@@ -3,7 +3,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class ChangePlayerForceSystem : SystemBase
+public class PlayerControlSystem : SystemBase
 {
     protected override void OnUpdate()
     {
