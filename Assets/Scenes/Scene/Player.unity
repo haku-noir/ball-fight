@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 496385338}
   - component: {fileID: 496385337}
   - component: {fileID: 496385336}
+  - component: {fileID: 496385344}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -288,7 +289,7 @@ MonoBehaviour:
     m_Template: {fileID: 0}
     m_CollisionResponse:
       m_Override: 0
-      m_Value: 0
+      m_Value: 1
     m_Friction:
       m_Override: 0
       m_Value:
@@ -459,6 +460,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &496385344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496385335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79df1d17f696d4e3890764c11bbf8be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Magnitude: 0
 --- !u!1 &1472811755
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +488,7 @@ GameObject:
   - component: {fileID: 1472811756}
   - component: {fileID: 1472811762}
   - component: {fileID: 1472811761}
+  - component: {fileID: 1472811763}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -579,7 +594,7 @@ MonoBehaviour:
     m_Template: {fileID: 0}
     m_CollisionResponse:
       m_Override: 0
-      m_Value: 0
+      m_Value: 1
     m_Friction:
       m_Override: 0
       m_Value:
@@ -779,3 +794,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0240286645903458691dda2eb545795c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1472811763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472811755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79df1d17f696d4e3890764c11bbf8be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Magnitude: 0
