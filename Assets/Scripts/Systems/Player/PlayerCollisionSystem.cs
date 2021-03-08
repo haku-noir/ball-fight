@@ -6,7 +6,7 @@ using Unity.Physics;
 using Unity.Physics.Systems;
 
 [UpdateAfter(typeof(EndFramePhysicsSystem))]
-public class AddImpulseSystem : SystemBase
+public class PlayerCollisionSystem : SystemBase
 {
     private BuildPhysicsWorld buildPhysicsWorld;
     private StepPhysicsWorld stepPhysicsWorld;
@@ -25,12 +25,12 @@ public class AddImpulseSystem : SystemBase
         {
             AllVelocities = GetComponentDataFromEntity<PhysicsVelocity>(false),
             AllMasses = GetComponentDataFromEntity<PhysicsMass>(true),
-            AllImpulses = GetComponentDataFromEntity<Impulse>(true)
+            AllDamages = GetComponentDataFromEntity<Damage>(true)
         };
 
-        var increaseImpulseJob = new IncreaseImpulseJob()
+        var causeDamageJob = new CauseDamageJob()
         {
-            AllImpulses = GetComponentDataFromEntity<Impulse>(false),
+            AllDamages = GetComponentDataFromEntity<Damage>(false),
             AllVelocities = GetComponentDataFromEntity<PhysicsVelocity>(true),
             AllMasses = GetComponentDataFromEntity<PhysicsMass>(true),
             AllAttacks = GetComponentDataFromEntity<Attack>(true)
@@ -41,7 +41,7 @@ public class AddImpulseSystem : SystemBase
             ref buildPhysicsWorld.PhysicsWorld,
             Dependency);
 
-        var secondDependency = increaseImpulseJob.Schedule(
+        var secondDependency = causeDamageJob.Schedule(
             stepPhysicsWorld.Simulation,
             ref buildPhysicsWorld.PhysicsWorld,
             firstDependency);
@@ -53,7 +53,7 @@ public class AddImpulseSystem : SystemBase
     {
         public ComponentDataFromEntity<PhysicsVelocity> AllVelocities;
         [ReadOnly] public ComponentDataFromEntity<PhysicsMass> AllMasses;
-        [ReadOnly] public ComponentDataFromEntity<Impulse> AllImpulses;
+        [ReadOnly] public ComponentDataFromEntity<Damage> AllDamages;
 
         public void Execute(CollisionEvent collisionEvent)
         {
@@ -66,11 +66,11 @@ public class AddImpulseSystem : SystemBase
                 var vB = AllVelocities[entityB].Linear;
                 var miA = AllMasses[entityA].InverseMass;
                 var miB = AllMasses[entityB].InverseMass;
-                var impulseA = AllImpulses[entityA].Magnitude;
-                var impulseB = AllImpulses[entityB].Magnitude;
+                var damageA = AllDamages[entityA].Value;
+                var damageB = AllDamages[entityB].Value;
 
-                var IA = (vA - vB) * (1 + impulseA) / (miA + miB);
-                var IB = (vB - vA) * (1 + impulseB) / (miA + miB);
+                var IA = (vA - vB) * (1 + damageA) / (miA + miB);
+                var IB = (vB - vA) * (1 + damageB) / (miA + miB);
 
                 var vA2 = AllVelocities[entityA];
                 vA2.Linear += IA * miA;
@@ -84,13 +84,13 @@ public class AddImpulseSystem : SystemBase
 
         private bool Exists(Entity entity)
         {
-            return AllVelocities.Exists(entity) && AllMasses.Exists(entity) && AllImpulses.Exists(entity);
+            return AllVelocities.Exists(entity) && AllMasses.Exists(entity) && AllDamages.Exists(entity);
         }
     }
 
-    struct IncreaseImpulseJob : ICollisionEventsJob
+    struct CauseDamageJob : ICollisionEventsJob
     {
-        public ComponentDataFromEntity<Impulse> AllImpulses;
+        public ComponentDataFromEntity<Damage> AllDamages;
         [ReadOnly] public ComponentDataFromEntity<Attack> AllAttacks;
         [ReadOnly] public ComponentDataFromEntity<PhysicsVelocity> AllVelocities;
         [ReadOnly] public ComponentDataFromEntity<PhysicsMass> AllMasses;
@@ -107,28 +107,28 @@ public class AddImpulseSystem : SystemBase
                 var miA = AllMasses[entityA].InverseMass;
                 var miB = AllMasses[entityB].InverseMass;
 
-                if (AllImpulses.Exists(entityA) && AllAttacks.Exists(entityB))
+                if (AllDamages.Exists(entityA) && AllAttacks.Exists(entityB))
                 {
-                    var attack = AllAttacks[entityB].Value;
+                    var attackB = AllAttacks[entityB].Value;
 
-                    var damage = (magA / miA - magB / miB) * attack;
+                    var damage = (magA / miA - magB / miB) * attackB;
                     damage = damage < 0 ? -damage : 0;
 
-                    var impulse = AllImpulses[entityA];
-                    impulse.Magnitude += damage;
-                    AllImpulses[entityA] = impulse;
+                    var damageA2 = AllDamages[entityA];
+                    damageA2.Value += damage;
+                    AllDamages[entityA] = damageA2;
                 }
 
-                if (AllAttacks.Exists(entityA) && AllImpulses.Exists(entityB))
+                if (AllAttacks.Exists(entityA) && AllDamages.Exists(entityB))
                 {
-                    var attack = AllAttacks[entityA].Value;
+                    var attackA = AllAttacks[entityA].Value;
 
-                    var damage = (magB / miB - magA / miA) * attack;
+                    var damage = (magB / miB - magA / miA) * attackA;
                     damage = damage < 0 ? -damage : 0;
 
-                    var impulse = AllImpulses[entityB];
-                    impulse.Magnitude += damage;
-                    AllImpulses[entityB] = impulse;
+                    var impulseB2 = AllDamages[entityB];
+                    impulseB2.Value += damage;
+                    AllDamages[entityB] = impulseB2;
                 }
             }
         }
