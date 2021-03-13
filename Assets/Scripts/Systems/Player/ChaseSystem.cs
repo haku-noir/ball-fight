@@ -1,15 +1,11 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public class ChaseSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
-
         Entities
             .ForEach((ref ChaserData chaser) =>
             {

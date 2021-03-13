@@ -36,12 +36,12 @@ public class PlayerCollisionSystem : SystemBase
             AllAttacks = GetComponentDataFromEntity<Attack>(true)
         };
 
-        var firstDependency = addImpulseJob.Schedule(
+        var firstDependency = causeDamageJob.Schedule(
             stepPhysicsWorld.Simulation,
             ref buildPhysicsWorld.PhysicsWorld,
             Dependency);
 
-        var secondDependency = causeDamageJob.Schedule(
+        var secondDependency = addImpulseJob.Schedule(
             stepPhysicsWorld.Simulation,
             ref buildPhysicsWorld.PhysicsWorld,
             firstDependency);
