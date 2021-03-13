@@ -382,6 +382,7 @@ GameObject:
   - component: {fileID: 2054072355}
   - component: {fileID: 2054072354}
   - component: {fileID: 2054072353}
+  - component: {fileID: 2054072357}
   m_Layer: 0
   m_Name: DropChecker
   m_TagString: Untagged
@@ -609,3 +610,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2054072357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054072352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16f8fdfd7b12f46a997c92dcff0b3bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
